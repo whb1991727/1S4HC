@@ -1,0 +1,35 @@
+managed implementation in class zcl_bp_onlineshop unique;
+with draft;
+define behavior for ZI_ONLINESHOP_WHB alias onlineshop
+persistent table zonline_shop
+lock master total etag CREATIONDATE
+draft table zonline_shop_t
+authorization master( global )
+
+{
+  field ( numbering : managed, readonly ) OrderUUID;
+  field ( mandatory ) Ordereditem;
+  field ( readonly ) creationdate, orderid;
+
+  create;
+  update;
+  delete;
+
+  determination calculate_order_id on save { create; }
+  internal action create_pr;
+
+  draft action Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for ZONLINE_SHOP
+  {
+    OrderUUID = ORDER_UUID;
+    OrderID = ORDER_ID;
+    Ordereditem = ORDEREDITEM;
+    Deliverydate = DELIVERYDATE;
+    Creationdate = CREATIONDATE;
+  }
+}

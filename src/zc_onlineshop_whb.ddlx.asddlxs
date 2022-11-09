@@ -1,0 +1,70 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'onlineshop',
+    typeNamePlural: 'onlineshops',
+    title: {
+            type: #STANDARD, label: 'Order', value: 'OrderID'
+        },
+    description:{ value: null }
+  },
+
+  presentationVariant: [{
+        sortOrder: [{
+            by: 'Creationdate',
+            direction: #DESC
+        }],
+        visualizations: [{
+            type: #AS_LINEITEM
+        }]
+    }]
+}
+annotate view ZC_ONLINESHOP_WHB with
+{
+@UI.facet: [ {
+    id: 'idIdentification',
+    purpose:#STANDARD,
+    type: #IDENTIFICATION_REFERENCE,
+    label:'Item',
+    position: 10
+  } ]
+  
+  @UI.hidden: true
+  OrderUUID;
+
+  @UI.lineItem: [ {
+    position: 10 ,
+    importance: #HIGH
+  } ]
+
+  @UI.selectionField: [{ position: 10 }]
+  OrderID;
+
+  @UI.lineItem: [ {
+    position: 20 ,
+    importance: #HIGH
+  } ]
+  @UI.identification: [ {
+    position: 20
+  } ]
+  Ordereditem;
+
+  @UI.lineItem: [ {
+    position: 30 ,
+    importance: #HIGH
+  } ]
+  @UI.identification: [ {
+    position: 30
+  } ]
+  @UI.selectionField: [{ position: 20 }]
+  Deliverydate;
+
+  @UI.lineItem: [ {
+    position: 40 ,
+    importance: #HIGH
+  } ]
+  @UI.identification: [ {
+    position: 40
+  } ]
+  Creationdate;
+}

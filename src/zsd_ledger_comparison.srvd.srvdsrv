@@ -1,0 +1,4 @@
+@EndUserText.label: 'LEDGER COMPARISON'
+define service ZSD_LEDGER_COMPARISON {
+  expose ZI_I532650_Ledger_Comparison;
+}
