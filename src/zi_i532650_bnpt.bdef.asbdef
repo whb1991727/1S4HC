@@ -1,0 +1,50 @@
+managed implementation in class ZCL_I532650_BNPT unique;
+strict ( 2 );
+with draft;
+define behavior for ZI_I532650_BNPT alias z_i532650_bounspoints
+persistent table zi532650_bnpt
+draft table ZI532650_BNPT_DT
+etag master AbpLocinstLastchangeDate
+lock master total etag AbpLastchangeDate
+authorization master( global )
+
+{
+  field ( mandatory: create)
+   Customer;
+
+  field ( readonly )
+   UUID,
+   AbpLocinstLastchangeDate,
+   AbpLastchangeDate;
+
+  field ( numbering : managed )
+   UUID;
+
+  field ( readonly : update )
+   Customer;
+
+  create;
+  update;
+  delete;
+
+  draft action Edit;
+  draft action Activate;
+  draft action Discard;
+  draft action Resume;
+  draft determine action Prepare;
+
+  mapping for ZI532650_BNPT
+  {
+    UUID = uuid;
+    Customer = customer;
+    Points = points;
+    AbpLocinstLastchangeDate = abp_locinst_lastchange_date;
+    AbpLocinstLastchangeTime = abp_locinst_lastchange_time;
+    AbpLocinstLastchangeTstmpl = abp_locinst_lastchange_tstmpl;
+    AbpLocinstLastchangeUtcl = abp_locinst_lastchange_utcl;
+    AbpLastchangeDate = abp_lastchange_date;
+    AbpLastchangeTime = abp_lastchange_time;
+    AbpLastchangeTstmpl = abp_lastchange_tstmpl;
+    AbpLastchangeUtcl = abp_lastchange_utcl;
+  }
+}

@@ -1,0 +1,4 @@
+@EndUserText.label: '#GENERATED bouns point'
+define service ZSD_I532650_BNPT {
+  expose ZC_I532650_BNPT as bounspoint;
+}

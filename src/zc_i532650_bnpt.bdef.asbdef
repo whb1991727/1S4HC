@@ -1,0 +1,20 @@
+projection implementation in class ZCL_I532650_BNPT_UI unique;
+//strict ( 2 );
+//use draft;
+define behavior for ZC_I532650_BNPT alias z_i532650_bounspoints
+use etag
+//authorization ( global )
+{
+//  use create;
+//  use update;
+//  use delete;
+//
+//  use action Edit;
+//  use action Activate;
+//  use action Discard;
+//  use action Resume;
+//  use action Prepare;
+
+
+ action redeem parameter zi_i532650_bnpt_abstract result [1] $self;
+}

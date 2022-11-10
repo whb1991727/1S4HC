@@ -1,0 +1,65 @@
+@Metadata.layer: #CUSTOMER
+@UI: {
+  headerInfo: {
+    typeName: 'Bouns Points', 
+    typeNamePlural: 'Bouns Points'
+  }
+}
+
+annotate view ZC_I532650_BNPT with
+{ 
+  
+  @UI.facet: [ {
+    id: 'idIdentification', 
+    type: #IDENTIFICATION_REFERENCE, 
+    label: 'z_i532650_bounspoints', 
+    position: 10 
+  } ]
+  @UI.hidden: true
+  UUID;
+  
+  @UI.lineItem: [ {
+    position: 10 , 
+    importance: #MEDIUM, 
+    label: 'Customer'} , 
+    { type: #FOR_ACTION, dataAction: 'redeem', label : 'Redeem'}
+    ]
+  @UI.identification: [ {
+    position: 10 , 
+    label: 'Customer'
+  } ]
+  Customer;
+  
+  @UI.lineItem: [ {
+    position: 20 , 
+    importance: #MEDIUM, 
+    label: 'Points'}
+    ]
+  @UI.identification: [ {
+    position: 20 , 
+    label: 'Points'
+  } ]
+  Points;
+  
+  @UI.hidden: true
+  AbpLocinstLastchangeDate;
+  
+  @UI.hidden: true
+  AbpLocinstLastchangeTime;
+  
+  @UI.hidden: true
+  AbpLocinstLastchangeTstmpl;
+  
+  @UI.hidden: true
+  AbpLocinstLastchangeUtcl;
+  
+  @UI.hidden: true
+  AbpLastchangeTime;
+  
+  @UI.hidden: true
+  AbpLastchangeTstmpl;
+  
+  @UI.hidden: true
+  AbpLastchangeUtcl;
+  
+}

@@ -19,8 +19,8 @@ CLASS zcl_i532650_ledger_comparison IMPLEMENTATION.
 
     IF io_request->is_data_requested( ).
 
-      DATA: lt_response TYPE TABLE OF zi_i532650_ledger_comparison,
-            ls_response LIKE LINE OF lt_response.
+      DATA: lt_response TYPE TABLE OF zi_i532650_ledger_comparison.
+
 
       DATA(lv_top)           = io_request->get_paging( )->get_page_size( ).
       DATA(lv_skip)          = io_request->get_paging( )->get_offset( ).
@@ -36,12 +36,12 @@ CLASS zcl_i532650_ledger_comparison IMPLEMENTATION.
 
 
 ****Data retrival and business logics goes here*****
-      DATA lt_ledger TYPE TABLE OF zi532650_je.
+      DATA lt_ledger TYPE TABLE OF zi_i532650_je.
 
       LOOP AT lt_parameter ASSIGNING FIELD-SYMBOL(<fs_p>).
         CASE <fs_p>-parameter_name.
-          WHEN 'P_BUKRS'. DATA(p_bukrs) = <fs_p>-value.
-          WHEN 'P_GJAHR'. DATA(p_gjahr) = <fs_p>-value.
+          WHEN 'P_BUKRS'.   DATA(p_bukrs) = <fs_p>-value.
+          WHEN 'P_GJAHR'.   DATA(p_gjahr) = <fs_p>-value.
           WHEN 'P_LEDGER1'. DATA(p_ledger1) = <fs_p>-value.
           WHEN 'P_LEDGER2'. DATA(p_ledger2) = <fs_p>-value.
         ENDCASE.
@@ -49,27 +49,21 @@ CLASS zcl_i532650_ledger_comparison IMPLEMENTATION.
 
 
       SELECT
-      bukrs,
-      gjahr,
-      racct,
-      rldnr,
-      SUM( amount ) AS amount
-      FROM zi532650_je
-      WHERE bukrs = @p_bukrs AND gjahr = @p_gjahr AND ( rldnr = @p_ledger1 OR rldnr = @p_ledger2 )
-      GROUP BY bukrs, gjahr, racct, rldnr
-      INTO CORRESPONDING FIELDS OF TABLE @lt_ledger.
+      bukrs as companycode,
+      gjahr as fiscalyear,
+      racct as glaccount,
+      SUM( amount1 ) AS amount1,
+      SUM( amount2 ) AS amount2
+      FROM zi_i532650_je(
+      p_bukrs = @p_bukrs,
+      p_gjahr = @p_gjahr,
+      p_rldnr1 = @p_ledger1,
+      p_rldnr2 = @p_ledger2 )
+      GROUP BY bukrs, gjahr, racct
+      INTO CORRESPONDING FIELDS OF TABLE @lt_response.
 
-      LOOP AT lt_ledger ASSIGNING FIELD-SYMBOL(<fs_l>).
-        ls_response-glaccount = <fs_l>-racct.
-        IF <fs_l>-rldnr = p_ledger1.
-          ls_response-ledger1amount = <fs_l>-amount.
-        ELSEIF <fs_l>-rldnr = p_ledger2.
-          ls_response-ledger2amount = <fs_l>-amount.
-        ENDIF.
-        AT LAST.
-          ls_response-difamount = ls_response-ledger1amount - ls_response-ledger2amount.
-          APPEND ls_response TO lt_response.
-        ENDAT.
+      LOOP AT lt_response ASSIGNING FIELD-SYMBOL(<fs_l>).
+        <fs_l>-difamount = abs(  <fs_l>-amount1 - <fs_l>-amount2 ).
       ENDLOOP.
 
       io_response->set_total_number_of_records( lines( lt_response ) ).
